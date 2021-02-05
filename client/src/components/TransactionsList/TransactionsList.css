@@ -1,0 +1,14 @@
+.EntitysItem{
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.btns-container{
+    display: flex;
+
+}
+
+.add-btn{
+    font-weight: bold;
+}
