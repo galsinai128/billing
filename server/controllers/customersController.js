@@ -28,8 +28,8 @@ exports.add = function (req, res) {
     customer.city = req.body.city;
     customer.street = req.body.street;
     customer.phone = req.body.phone;
-    customer.total_price = req.body.total_price;
-    customer.currency = req.body.currency;
+    // customer.total_price = req.body.total_price;
+    // customer.currency = req.body.currency;
     customer.cerdit_card_type = req.body.cerdit_card_type;
     customer.cerdit_card_number = req.body.cerdit_card_number;
 
@@ -67,7 +67,7 @@ exports.update = function (req, res) {
         customer.city = req.body.city;
         customer.street = req.body.street;
         customer.phone = req.body.phone;
-        customer.total_price = req.body.total_price;
+        // customer.total_price = req.body.total_price;
         customer.cerdit_card_type = req.body.cerdit_card_type;
         customer.cerdit_card_number = req.body.cerdit_card_number;
 

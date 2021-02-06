@@ -11,12 +11,24 @@ router.get('/', function(req, res) {
 });
 
 //Import transactions Controller
-var customersController = require('./controllers/customersController');
+var transactionsController = require('./controllers/transactionsController');
 // transactions routes
-router.route('/customers')
+router.route('/transaction')
+    .get(transactionsController.index)
+    .post(transactionsController.add);
+router.route('/transaction/:_id')
+    .get(transactionsController.view)
+    .patch(transactionsController.update)
+    .put(transactionsController.update)
+    .delete(transactionsController.delete);
+
+//Import customer Controller
+var customersController = require('./controllers/customersController');
+// customer routes
+router.route('/customer')
     .get(customersController.index)
     .post(customersController.add);
-router.route('/customers/:_id')
+router.route('/customer/:_id')
     .get(customersController.view)
     .patch(customersController.update)
     .put(customersController.update)

@@ -35,7 +35,7 @@ app.use('/api', apiRoutes)
 
 //connect to mongoose
 const dbPath = 'mongodb+srv://galsinai128:Gg200972834@cluster0.mqbrs.mongodb.net/customers?retryWrites=true&w=majority';
-const options = {useNewUrlParser: true, useUnifiedTopology: true}
+const options = {useNewUrlParser: true, useUnifiedTopology: true}; 
 const mongo = mongoose.connect(dbPath, options);
 mongo.then(res => {
     console.log('connected');

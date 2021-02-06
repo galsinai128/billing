@@ -37,14 +37,14 @@ var customersSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    total_price: {
-        type: String,
-        required: true
-    },
-    currency: {
-        type: String,
-        required: true
-    },
+    // total_price: {
+    //     type: String,
+    //     required: true
+    // },
+    // currency: {
+    //     type: String,
+    //     required: true
+    // },
     cerdit_card_type: {
         type: String,
         required: true

@@ -45,7 +45,7 @@ transaction.save(function (err) {
 
 // View transaction
 exports.view = function (req, res) {
-    Transactions.findById(req.params.customer_id, function (err, transaction) {
+    Transactions.findById(req.params._id, function (err, transaction) {
         if (err) res.send(err);
         res.json({
             message: 'transaction Details',
@@ -56,7 +56,7 @@ exports.view = function (req, res) {
 
 // Update transaction
 exports.update = function (req, res) {
-    Transactions.findById(req.params.customer_id, function (err, transaction) {
+    Transactions.findById(req.params._id, function (err, transaction) {
         if (err) res.send(err);
         transaction.customer_id = req.body.customer_id;
         transaction.first_name = req.body.first_name;
@@ -68,6 +68,7 @@ exports.update = function (req, res) {
         transaction.street = req.body.street;
         transaction.phone = req.body.phone;
         transaction.total_price = req.body.total_price;
+        transaction.currency = req.body.currency;
         transaction.cerdit_card_type = req.body.cerdit_card_type;
         transaction.cerdit_card_number = req.body.cerdit_card_number;
 
@@ -86,7 +87,7 @@ transaction.save(function (err) {
 // Delete transaction
 exports.delete = function (req, res) {
     Transactions.deleteOne({
-        _id: req.params.customer_id
+        _id: req.params._id
     }, function (err, contact) {
         if (err)
             res.send(err)
