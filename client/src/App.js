@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import EntitysList from './components/EntitysList/EntitysList';
 import TransactionsList from './components/TransactionsList/TransactionsList';
+import CustomersList from './components/CustomersList/CustomersList';
 
 function App() {
 
@@ -24,7 +25,8 @@ function App() {
           />
         </div>
         <div className={'data-container'}>
-            <TransactionsList/>
+            {activeEntity === 'transactions' ? <TransactionsList/> : null}
+            {activeEntity === 'customers' ? <CustomersList/> : null}
         </div>
       </div>
 

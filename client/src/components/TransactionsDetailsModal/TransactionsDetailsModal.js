@@ -1,5 +1,6 @@
-import './DetailsModal.css';
+import './TransactionsDetailsModal.css';
 import React, { useState } from 'react';
+import {inputValidation} from '../../utils'
 
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -14,18 +15,11 @@ function DetailsModal({transaction,closeDetails, editTransaction, isNewItem, add
     }
 
     function saveChanges(){
-        if (inputValidation()){
+        if (inputValidation(editedTransaction)){
             isNewItem ? addTransaction(editedTransaction) : editTransaction(editedTransaction);
         }
     }
 
-    function inputValidation(){
-        let valid = true;
-        for (const [key, value] of Object.entries(editedTransaction)) {
-            if (!value || !key) valid = false;
-          }
-        return valid;
-    }
   return (
     <div className="detailsModalContainer">
       <Modal.Dialog scrollable>

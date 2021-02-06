@@ -1,23 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import './TransactionsList.css';
 import {getTransactions, deleteTransactions, editTransactions, addTransactions} from '../../api'
+import {idGen} from '../../utils'
+import ClipLoader from "react-spinners/ClipLoader";
 
 import ListGroup from 'react-bootstrap/ListGroup';
 
-import DetailsModal from '../DetailsModal/DetailsModal'
+import DetailsModal from '../TransactionsDetailsModal/TransactionsDetailsModal'
 
 function TransactionsList() {
   const [transactions, setTransactions] = useState([]);
   const [currentTransaction, setCurrentTransactions] = useState(null);
   const [isNewItem, setIsNewItem] = useState(false);
+  const [connectionError, setConnectionError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
+    setIsLoading(true);
     getTransactions().then(res => {
-      setTransactions(res.data.data);
+      setIsLoading(false);
+      if (isMounted) setTransactions(res.data.data);
     })
     .catch(err => {
-      console.log('error getting transactions',err)
+      setIsLoading(false);
+      console.log(err);
+      setConnectionError(err.message);
     })
+    return () => { isMounted = false };
   },[]);
 
   function viewDetails(transaction){
@@ -63,17 +73,6 @@ function TransactionsList() {
     closeDetails();
   }
 
-  function idGen(){
-    function getRandomInt(min, max) {
-      min = Math.ceil(min);
-      max = Math.floor(max);
-      return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-    }
-    let id = '';
-    id = id + getRandomInt(0,10) + getRandomInt(0,10) + getRandomInt(0,10) + '-' + getRandomInt(0,10) + getRandomInt(0,10) + '-' + getRandomInt(0,10) + getRandomInt(0,10) + getRandomInt(0,10) + getRandomInt(0,10) 
-    return id;
-  }
-
   return (
     <div className="entitysList">
       {currentTransaction ? (
@@ -85,7 +84,8 @@ function TransactionsList() {
           addTransaction={(editetTransaction)=>addTransaction(editetTransaction)}
         ></DetailsModal>) : null}
       <ListGroup>
-        <ListGroup.Item 
+        <ListGroup.Item className={'EntitysItem entity-title'}>Transactions List</ListGroup.Item>
+        {connectionError ? null : (<ListGroup.Item 
           onClick={()=>{viewDetails({
             first_name: "",
             last_name: "",
@@ -100,13 +100,15 @@ function TransactionsList() {
             cerdit_card_type: "",
             cerdit_card_number: ""
           });  setIsNewItem(true)}}
-          className={'EntitysItem add-btn'}
-        >Add Transaction</ListGroup.Item>
+          className={'EntitysItem add-btn pointer'}
+        >Add Transaction</ListGroup.Item>)}
+        {isLoading ? (<div className={'spinner'}><ClipLoader></ClipLoader></div>) : null}
+        {!isLoading && !transactions.length ? (<ListGroup.Item className={'EntitysItem'}>No Items To Display</ListGroup.Item>) : null}
         {transactions.map(transaction => {return (
             <ListGroup.Item
                 key={transaction.customer_id}
                 active={currentTransaction && currentTransaction.customer_id === transaction.customer_id}
-                className={'EntitysItem'}
+                className={'EntitysItem  pointer'}
                 onClick={()=>viewDetails(transaction)}
             >
               <div>{`${transaction.first_name} ${transaction.last_name} - ${transaction.total_price} ${transaction.currency}`}</div>
@@ -116,6 +118,7 @@ function TransactionsList() {
 
             </ListGroup.Item>)})}
       </ListGroup>
+      {connectionError ? <h4 className={'error'}>{connectionError}</h4> : null}
     </div>
   );
 }
