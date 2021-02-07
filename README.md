@@ -37,15 +37,13 @@ general info:
 
 TODO:
 
-1) pagination (server and client) - currently get all items from entity list.
+1) pagination/ lazy load (server and client) - currently get all items from entity list.
 
 2) input validation in client - currently only checking if input is empty, need to check email/visa/ phone validity.
 
-3) docker
+3) e2e + unit testing
 
-4) e2e testing
 
-5) unit testing
 
 
 
