@@ -3,6 +3,7 @@
 pre-install requierments: 
 
 1)git
+
 2)node js
 
 run intruction:
