@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './TransactionsList.css';
 import {getTransactions, deleteTransactions, editTransactions, addTransactions} from '../../api'
 import {idGen} from '../../utils'
-import ClipLoader from "react-spinners/ClipLoader";
-
-import ListGroup from 'react-bootstrap/ListGroup';
-
-import DetailsModal from '../TransactionsDetailsModal/TransactionsDetailsModal'
+import EntityList from '../EntityList/EntityList'
 
 function TransactionsList() {
   const [transactions, setTransactions] = useState([]);
@@ -29,10 +24,6 @@ function TransactionsList() {
     })
     return () => { isMounted = false };
   },[]);
-
-  function viewDetails(transaction){
-    setCurrentTransactions(transaction);
-  }
 
   function closeDetails(){
     setCurrentTransactions(null);
@@ -73,53 +64,36 @@ function TransactionsList() {
     closeDetails();
   }
 
-  return (
-    <div className="entitysList">
-      {currentTransaction ? (
-        <DetailsModal 
-          transaction={currentTransaction}      
-          closeDetails={closeDetails}
-          editTransaction={(editetTransaction)=>editTransaction(editetTransaction)}
-          isNewItem={isNewItem}
-          addTransaction={(editetTransaction)=>addTransaction(editetTransaction)}
-        ></DetailsModal>) : null}
-      <ListGroup>
-        <ListGroup.Item className={'EntitysItem entity-title'}>Transactions List</ListGroup.Item>
-        {connectionError ? null : (<ListGroup.Item 
-          onClick={()=>{viewDetails({
-            first_name: "",
-            last_name: "",
-            email: "",
-            gender: "",
-            country: "",
-            city: "",
-            street: "",
-            phone: "",
-            total_price: "",
-            currency: "",
-            cerdit_card_type: "",
-            cerdit_card_number: ""
-          });  setIsNewItem(true)}}
-          className={'EntitysItem add-btn pointer'}
-        >Add Transaction</ListGroup.Item>)}
-        {isLoading ? (<div className={'spinner'}><ClipLoader></ClipLoader></div>) : null}
-        {!isLoading && !transactions.length ? (<ListGroup.Item className={'EntitysItem'}>No Items To Display</ListGroup.Item>) : null}
-        {transactions.map(transaction => {return (
-            <ListGroup.Item
-                key={transaction.customer_id}
-                active={currentTransaction && currentTransaction.customer_id === transaction.customer_id}
-                className={'EntitysItem  pointer'}
-                onClick={()=>viewDetails(transaction)}
-            >
-              <div>{`${transaction.first_name} ${transaction.last_name} - ${transaction.total_price} ${transaction.currency}`}</div>
-              <div className={'btns-container'}>
-                <div onClick={(event)=>deleteTransaction(event,transaction)}>✗</div>
-              </div>
+  let emptyTransaction = {
+    first_name: "",
+    last_name: "",
+    email: "",
+    gender: "",
+    country: "",
+    city: "",
+    street: "",
+    phone: "",
+    total_price: "",
+    currency: "",
+    cerdit_card_type: "",
+    cerdit_card_number: ""
+  }
 
-            </ListGroup.Item>)})}
-      </ListGroup>
-      {connectionError ? <h4 className={'error'}>{connectionError}</h4> : null}
-    </div>
+  return (
+    <EntityList
+      entityName={'Transaction'}
+      entityList={transactions}
+      deleteEntityService={deleteTransaction}
+      editEntityService={editTransaction}
+      addEntityService={addTransaction}
+      connectionError={connectionError}
+      isLoading={isLoading}
+      currentEntity={currentTransaction}
+      setCurrentEntity={setCurrentTransactions}
+      isNewItem={isNewItem}
+      setIsNewItem={setIsNewItem}
+      emptyEntity={emptyTransaction}
+    />
   );
 }
 

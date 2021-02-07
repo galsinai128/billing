@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './CustomersList.css';
 import {getCustomers, deleteCustomers, editCustomers, addCustomers} from '../../api'
 import {idGen} from '../../utils'
-import ClipLoader from "react-spinners/ClipLoader";
-
-import ListGroup from 'react-bootstrap/ListGroup';
-
-import DetailsModal from '../CustomersDetailsModal/CustomersDetailsModal'
+import EntityList from '../EntityList/EntityList'
 
 function CustomersList() {
   const [customers, setCustomers] = useState([]);
@@ -29,10 +24,6 @@ function CustomersList() {
     })
     return () => { isMounted = false };
   },[]);
-
-  function viewDetails(customer){
-    setCurrentCustomer(customer);
-  }
 
   function closeDetails(){
     setCurrentCustomer(null);
@@ -73,51 +64,34 @@ function CustomersList() {
     closeDetails();
   }
 
-  return (
-    <div className="entitysList">
-      {currentCustomer ? (
-        <DetailsModal 
-          customer={currentCustomer}      
-          closeDetails={closeDetails}
-          editCustomer={(editetCustomer)=>editCustomer(editetCustomer)}
-          isNewItem={isNewItem}
-          addCustomer={(editetCustomer)=>addCustomer(editetCustomer)}
-        ></DetailsModal>) : null}
-      <ListGroup>
-        <ListGroup.Item className={'EntitysItem entity-title'}>Customers List</ListGroup.Item>
-        {connectionError ? null : (<ListGroup.Item 
-          onClick={()=>{viewDetails({
-            first_name: "",
-            last_name: "",
-            email: "",
-            gender: "",
-            country: "",
-            city: "",
-            street: "",
-            phone: "",
-            cerdit_card_type: "",
-            cerdit_card_number: ""
-          });  setIsNewItem(true)}}
-          className={'EntitysItem add-btn pointer'}
-        >Add Customer</ListGroup.Item>)}
-        {isLoading ? (<div className={'spinner'}><ClipLoader></ClipLoader></div>) : null}
-        {!isLoading && !customers.length ? (<ListGroup.Item className={'EntitysItem'}>No Items To Display</ListGroup.Item>) : null}
-        {customers.map(customer => {return (
-            <ListGroup.Item
-                key={customer.customer_id}
-                active={currentCustomer && currentCustomer.customer_id === customer.customer_id}
-                className={'EntitysItem pointer'}
-                onClick={()=>viewDetails(customer)}
-            >
-              <div>{`${customer.first_name} ${customer.last_name}`}</div>
-              <div className={'btns-container'}>
-                <div onClick={(event)=>deleteCustomer(event,customer)}>✗</div>
-              </div>
+  let emptyCustomer = {
+    first_name: "",
+    last_name: "",
+    email: "",
+    gender: "",
+    country: "",
+    city: "",
+    street: "",
+    phone: "",
+    cerdit_card_type: "",
+    cerdit_card_number: ""
+  }
 
-            </ListGroup.Item>)})}
-      </ListGroup>
-      {connectionError ? <h4 className={'error'}>{connectionError}</h4> : null}
-    </div>
+  return (
+    <EntityList
+      entityName={'Customer'}
+      entityList={customers}
+      deleteEntityService={deleteCustomer}
+      editEntityService={editCustomer}
+      addEntityService={addCustomer}
+      connectionError={connectionError}
+      isLoading={isLoading}
+      currentEntity={currentCustomer}
+      setCurrentEntity={setCurrentCustomer}
+      isNewItem={isNewItem}
+      setIsNewItem={setIsNewItem}
+      emptyEntity={emptyCustomer}
+  />
   );
 }
 

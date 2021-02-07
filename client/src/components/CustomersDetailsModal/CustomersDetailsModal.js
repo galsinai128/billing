@@ -4,6 +4,7 @@ import {inputValidation} from '../../utils'
 
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import SimpleMap from '../SimpleMap/SimpleMap'
 
 function DetailsModal({customer,closeDetails, editCustomer, isNewItem, addCustomer}) {
     const [editedCustomer, setEditedCustomer] = useState(customer);
@@ -81,6 +82,8 @@ function DetailsModal({customer,closeDetails, editCustomer, isNewItem, addCustom
                     <input type="text" value={editedCustomer.cerdit_card_number} onChange={(ev)=>handleChange(ev,'cerdit_card_number')}/>
                 </label>
             </form>
+
+            <SimpleMap address={`${editedCustomer.street} ${editedCustomer.city} ${editedCustomer.country}`}/>
         </Modal.Body>
 
         <Modal.Footer>

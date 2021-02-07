@@ -1,5 +1,6 @@
 const axios = require('axios');
 const BASE_URL = 'http://localhost:8080/api'
+const GOOGLE_API_KEY = 'AIzaSyAGsJ_d09jxhQCUrHQplmZxa8cf5NPZS2M'
 
 export function getTransactions(){
     return axios.get(`${BASE_URL}/transaction`)
@@ -31,4 +32,15 @@ export function editCustomers(editedItem){
 
 export function addCustomers(newItem){
     return axios.post(`${BASE_URL}/api/customer`,newItem)
+}
+
+//GEOCODE
+export function getGoecode(Geocode, address){
+    Geocode.setApiKey(GOOGLE_API_KEY);
+    Geocode.setLanguage("en");
+    Geocode.setRegion("en");
+    Geocode.enableDebug();
+    
+    // Get latitude & longitude from address.
+    return Geocode.fromAddress(address);
 }
