@@ -3,8 +3,7 @@ Customers = require('../models/customersModel');
 //For index
 exports.index = function (req, res) {
     Customers.get(function (err, customers) {
-        if (err)
-            res.json({
+        if (err) res.json({
                 status: "error",
                 message: err
             });
@@ -73,8 +72,7 @@ exports.update = function (req, res) {
 
 //save and check errors
 customer.save(function (err) {
-            if (err)
-                res.json(err)
+            if (err) res.json(err)
             res.json({
                 message: "customer Updated Successfully",
                 data: customer
@@ -88,8 +86,7 @@ exports.delete = function (req, res) {
     Customers.deleteOne({
         _id: req.params._id
     }, function (err, contact) {
-        if (err)
-            res.send(err)
+        if (err) res.send(err)
         res.json({
             status: "success",
             message: 'customer Deleted'

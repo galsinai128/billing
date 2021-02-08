@@ -10,9 +10,40 @@ export function idGen(){
   }
 
 export function inputValidation(editedObject){
-    let valid = true;
+    let inValidFields = {};
     for (const [key, value] of Object.entries(editedObject)) {
-        if (value === '' || !key) {valid = false}
+        if (value === '') {
+          inValidFields[key] = true;
+        }
+        if (key === 'email'){
+          if (!validateEmail(value)){
+            inValidFields[key] = true;
+          } 
+        }
+        if (key === 'cerdit_card_number' || key === 'total_price'){
+          if (!validateNumber(value)){
+            inValidFields[key] = true;
+          } 
+        }
+        if (key === 'cerdit_card_type' || key === 'currency'){
+          if (!validateCharacters(value)){
+            inValidFields[key] = true;
+          } 
+        }
       }
-    return valid;
+    return inValidFields;
+}
+
+function validateEmail(email) {
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
+
+
+function validateNumber(str){
+  return !isNaN(str);
+}
+
+function validateCharacters(str){
+  return /^[a-zA-Z]+$/.test(str);
 }

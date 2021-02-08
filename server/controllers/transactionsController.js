@@ -3,8 +3,7 @@ Transactions = require('../models/transactionsModel');
 //For index
 exports.index = function (req, res) {
     Transactions.get(function (err, transactions) {
-        if (err)
-            res.json({
+        if (err) res.json({
                 status: "error",
                 message: err
             });
@@ -74,8 +73,7 @@ exports.update = function (req, res) {
 
 //save and check errors
 transaction.save(function (err) {
-            if (err)
-                res.json(err)
+            if (err) res.json(err)
             res.json({
                 message: "transaction Updated Successfully",
                 data: transaction
@@ -89,8 +87,7 @@ exports.delete = function (req, res) {
     Transactions.deleteOne({
         _id: req.params._id
     }, function (err, contact) {
-        if (err)
-            res.send(err)
+        if (err) res.send(err)
         res.json({
             status: "success",
             message: 'transaction Deleted'

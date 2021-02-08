@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 
 function EntityModal({entityName,entity,closeDetails, editEntity, isNewItem, addEntity}) {
     const [editedEntity, setEditEntity] = useState(entity);
+    const [invalidFields, setInvalidFields] = useState({});
 
     function handleChange(ev,key){
         let editedEntityCopy = JSON.parse(JSON.stringify(editedEntity));
@@ -15,8 +16,13 @@ function EntityModal({entityName,entity,closeDetails, editEntity, isNewItem, add
     }
 
     function saveChanges(){
-        if (inputValidation(editedEntity)){
+        let fieldsCheck = inputValidation(editedEntity);
+        if (!Object.keys(fieldsCheck).length){
+            setInvalidFields({});
             isNewItem ? addEntity(editedEntity) : editEntity(editedEntity);
+        }
+        else {
+            setInvalidFields(fieldsCheck);
         }
     }
 
@@ -31,63 +37,66 @@ function EntityModal({entityName,entity,closeDetails, editEntity, isNewItem, add
             <form className={'form-body'}>
 
                 <label  className={'form-label'}>
-                first_name:
-                    <input type="text" value={editedEntity.first_name} onChange={(ev)=>handleChange(ev,'first_name')}/>
+                First Name:
+                    <input className={invalidFields['first_name'] ? 'error-input' : null} type="text" value={editedEntity.first_name} onChange={(ev)=>handleChange(ev,'first_name')}/>
                 </label>
                 
                 <label  className={'form-label'}>
-                last_name:
-                    <input type="text" value={editedEntity.last_name} onChange={(ev)=>handleChange(ev,'last_name')}/>
+                Last Name:
+                    <input className={invalidFields['last_name'] ? 'error-input' : null}  type="text" value={editedEntity.last_name} onChange={(ev)=>handleChange(ev,'last_name')}/>
                 </label>
                 
                 <label  className={'form-label'}>
-                email:
-                    <input type="text" value={editedEntity.email} onChange={(ev)=>handleChange(ev,'email')}/>
+                E-mail:
+                    <input className={invalidFields['email'] ? 'error-input' : null} type="text" value={editedEntity.email} onChange={(ev)=>handleChange(ev,'email')}/>
                 </label>
                 
                 <label className={'form-label'}>
-                gender:
-                    <input type="text" value={editedEntity.gender} onChange={(ev)=>handleChange(ev,'gender')}/>
+                Gender:
+                    <select  value={editedEntity.gender} onChange={(ev)=>handleChange(ev,'gender')}>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
                 </label>
                 
                 <label className={'form-label'}>
-                country:
-                    <input type="text" value={editedEntity.country} onChange={(ev)=>handleChange(ev,'country')}/>
+                Country:
+                    <input className={invalidFields['country'] ? 'error-input' : null} type="text" value={editedEntity.country} onChange={(ev)=>handleChange(ev,'country')}/>
                 </label>
                 
                 <label className={'form-label'}>
-                city:
-                    <input type="text" value={editedEntity.city} onChange={(ev)=>handleChange(ev,'city')}/>
+                City:
+                    <input className={invalidFields['city'] ? 'error-input' : null} type="text" value={editedEntity.city} onChange={(ev)=>handleChange(ev,'city')}/>
                 </label>
                 
                 <label className={'form-label'}>
-                street:
+                Street:
                     <input type="text" value={editedEntity.street} onChange={(ev)=>handleChange(ev,'street')}/>
                 </label>
                 
                 <label className={'form-label'}>
-                phone:
-                    <input type="text" value={editedEntity.phone} onChange={(ev)=>handleChange(ev,'phone')}/>
+                Phone:
+                    <input className={invalidFields['phone'] ? 'error-input' : null} type="text" value={editedEntity.phone} onChange={(ev)=>handleChange(ev,'phone')}/>
                 </label>
                 
                 <label className={'form-label'}>
-                total_price:
-                    <input type="text" value={editedEntity.total_price} onChange={(ev)=>handleChange(ev,'total_price')}/>
+                Total Price:
+                    <input  className={invalidFields['total_price'] ? 'error-input' : null} type="text" value={editedEntity.total_price} onChange={(ev)=>handleChange(ev,'total_price')}/>
                 </label>
                 
                 {entityName === 'Transaction' ? (<label className={'form-label'}>
-                currency:
-                    <input type="text" value={editedEntity.currency} onChange={(ev)=>handleChange(ev,'currency')}/>
+                Currency:
+                    <input className={invalidFields['currency'] ? 'error-input' : null} type="text" value={editedEntity.currency} onChange={(ev)=>handleChange(ev,'currency')}/>
                 </label>) : null } 
 
                 {entityName === 'Transaction' ? (<label className={'form-label'}>
-                cerdit_card_type:
-                    <input type="text" value={editedEntity.cerdit_card_type} onChange={(ev)=>handleChange(ev,'cerdit_card_type')}/>
+                Credit Card Type:
+                    <input className={invalidFields['cerdit_card_type'] ? 'error-input' : null} type="text" value={editedEntity.cerdit_card_type} onChange={(ev)=>handleChange(ev,'cerdit_card_type')}/>
                 </label>) : null}
 
                 <label className={'form-label'}>
-                cerdit_card_number:
-                    <input type="text" value={editedEntity.cerdit_card_number} onChange={(ev)=>handleChange(ev,'cerdit_card_number')}/>
+                Credit Card Number:
+                    <input className={invalidFields['cerdit_card_number'] ? 'error-input' : null} type="text" value={editedEntity.cerdit_card_number} onChange={(ev)=>handleChange(ev,'cerdit_card_number')}/>
                 </label>
             </form>
             {isNewItem ? null : <SimpleMap address={`${editedEntity.street} ${editedEntity.city} ${editedEntity.country}`}/>}
