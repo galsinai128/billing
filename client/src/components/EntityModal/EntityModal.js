@@ -17,6 +17,7 @@ function EntityModal({entityName,entity,closeDetails, editEntity, isNewItem, add
 
     function saveChanges(){
         let fieldsCheck = inputValidation(editedEntity);
+        console.log(Object.keys(fieldsCheck))
         if (!Object.keys(fieldsCheck).length){
             setInvalidFields({});
             isNewItem ? addEntity(editedEntity) : editEntity(editedEntity);
@@ -53,7 +54,8 @@ function EntityModal({entityName,entity,closeDetails, editEntity, isNewItem, add
                 
                 <label className={'form-label'}>
                 Gender:
-                    <select  value={editedEntity.gender} onChange={(ev)=>handleChange(ev,'gender')}>
+                    <select  className={invalidFields['gender'] ? 'error-input' : null}  value={editedEntity.gender} onChange={(ev)=>handleChange(ev,'gender')}>
+                        <option value=""></option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                     </select>
@@ -79,20 +81,20 @@ function EntityModal({entityName,entity,closeDetails, editEntity, isNewItem, add
                     <input className={invalidFields['phone'] ? 'error-input' : null} type="text" value={editedEntity.phone} onChange={(ev)=>handleChange(ev,'phone')}/>
                 </label>
                 
-                <label className={'form-label'}>
+                {entityName === 'Transaction' ? (<label className={'form-label'}>
                 Total Price:
                     <input  className={invalidFields['total_price'] ? 'error-input' : null} type="text" value={editedEntity.total_price} onChange={(ev)=>handleChange(ev,'total_price')}/>
-                </label>
+                </label>) : null }
                 
                 {entityName === 'Transaction' ? (<label className={'form-label'}>
                 Currency:
                     <input className={invalidFields['currency'] ? 'error-input' : null} type="text" value={editedEntity.currency} onChange={(ev)=>handleChange(ev,'currency')}/>
                 </label>) : null } 
 
-                {entityName === 'Transaction' ? (<label className={'form-label'}>
+                <label className={'form-label'}>
                 Credit Card Type:
                     <input className={invalidFields['cerdit_card_type'] ? 'error-input' : null} type="text" value={editedEntity.cerdit_card_type} onChange={(ev)=>handleChange(ev,'cerdit_card_type')}/>
-                </label>) : null}
+                </label>
 
                 <label className={'form-label'}>
                 Credit Card Number:

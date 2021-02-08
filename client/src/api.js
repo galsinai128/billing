@@ -31,7 +31,7 @@ export function editCustomers(editedItem){
 }
 
 export function addCustomers(newItem){
-    return axios.post(`${BASE_URL}/api/customer`,newItem)
+    return axios.post(`${BASE_URL}/customer`,newItem)
 }
 
 //GEOCODE

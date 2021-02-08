@@ -25,11 +25,6 @@ export function inputValidation(editedObject){
             inValidFields[key] = true;
           } 
         }
-        if (key === 'cerdit_card_type' || key === 'currency'){
-          if (!validateCharacters(value)){
-            inValidFields[key] = true;
-          } 
-        }
       }
     return inValidFields;
 }
@@ -42,8 +37,4 @@ function validateEmail(email) {
 
 function validateNumber(str){
   return !isNaN(str);
-}
-
-function validateCharacters(str){
-  return /^[a-zA-Z]+$/.test(str);
 }
